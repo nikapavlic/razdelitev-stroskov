@@ -15,9 +15,21 @@ class Model:
     def pobrisi_skupino(self, skupina):
         self.skupine.remove(skupina)
 
+    def zamenjaj_skupino(self, skupina):
+        self.aktualna_skupina = skupina
+
     def zakljuci_belezenje(self, skupina):
         self.skupine.remove(skupina)
         self.moja_zgodovina.append(skupina)
+
+    def dodaj_udelezenca(self, ime):
+        self.aktualna_skupina.dodaj_udelezenca(ime)
+    
+    def pobrisi_udelezenca(self, ime):
+        self.aktualna_skupina.zbrisi_udelezenca(ime)
+
+    def dodaj_placilo(self, placilo):
+        self.aktualna_skupina.dodaj_placilo(placilo)
 
 class Skupina:
     def __init__(self, ime):
@@ -34,19 +46,21 @@ class Skupina:
         return len(self.udelezenci)
 
     def skupni_strosek(self):
-        return sum([udelezenec.placano for udelezenec in self.udelezenci]) 
+        return sum([oseba.placano for oseba in self.udelezenci]) 
 
     def strosek_enega(self):
-        return Skupina.skupni_strosek() / Skupina.stevilo_udelezencev()
+        return round(Skupina.skupni_strosek() / Skupina.stevilo_udelezencev(), 2) 
     
 
 class Udelezenec:
     def __init__(self, ime):
         self.ime = ime
         self.placano = 0
+        self.placila = []
 
     def dodaj_placilo(self, placilo):
         self.placano += placilo
+        self.placila.append(placilo)
 
     def zbrisi_placilo(self, placilo):
         self.placano -= placilo
