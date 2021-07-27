@@ -34,11 +34,12 @@ class Skupina:
         return len(self.udelezenci)
 
     def skupni_strosek(self):
-        return sum()
+        return sum([udelezenec.placano for udelezenec in self.udelezenci]) 
 
     def strosek_enega(self):
         return Skupina.skupni_strosek() / Skupina.stevilo_udelezencev()
     
+
 class Udelezenec:
     def __init__(self, ime):
         self.ime = ime
@@ -46,6 +47,9 @@ class Udelezenec:
 
     def dodaj_placilo(self, placilo):
         self.placano += placilo
+
+    def zbrisi_placilo(self, placilo):
+        self.placano -= placilo
 
     def še_dolzen(self):
         return Skupina.strosek_enega() - self.placano
