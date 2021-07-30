@@ -104,7 +104,7 @@ def prikazi_aktualne_skupine():
 def dodaj_skupino():
     print("Vnesite podatke nove skupine.")
     ime = input("Ime> ")
-    if ime in moj_model.skupine:
+    if ime.upper() in moj_model.imena_skupin():
         print("Skupina s takšnim imenom že obstaja.")
     else:
         nova_skupina = Skupina(ime)

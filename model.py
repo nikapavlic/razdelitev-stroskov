@@ -22,6 +22,14 @@ class Model:
         self.skupine.remove(skupina)
         self.moja_zgodovina.append(skupina)
 
+    def imena_skupin(self):
+        """Vrne seznam imen skupin."""
+        seznam = [str(skupina.ime) for skupina in self.skupine]
+        povecan_seznam = []
+        for ime in seznam:
+            povecan_seznam.append(ime.upper())
+        return povecan_seznam
+        
     #def dodaj_udelezenca(self, ime):
     #    self.aktualna_skupina.dodaj_udelezenca(ime)
     #    self.udelezenci.append(ime)
