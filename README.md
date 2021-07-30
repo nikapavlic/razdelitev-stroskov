@@ -1,2 +1,2 @@
-# Razdelitev-stroskov
+# Razdelitev stroskov
 Program je namenjen lažji razdelitvi stroškov potovanj/ skupnega bivanja/ itd. med skupino ljudi.
