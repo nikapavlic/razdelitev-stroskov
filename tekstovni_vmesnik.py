@@ -37,14 +37,14 @@ def izberi_moznost(moznosti):
 def prikaz_skupine(skupina):
     return f"{skupina.ime}"
 
-def prikaz_udelezenca(ime):
-    oseba = ime
-    placal = ime.placano
-    dolg = Udelezenec.še_dolzen(ime)
-    return f"{oseba}: plačal/-a {placal}, dolžen/-a še {dolg}"
+def prikaz_udelezenca(oseba):
+    skupina = moj_model.aktualna_skupina
+    dolg = Skupina.strosek_enega(skupina) - int(Udelezenec.placal(oseba))
+    #dolg = Udelezenec.še_dolzen(oseba)
+    return f"{oseba.ime}: plačal/-a {Udelezenec.placal(oseba)}, dolžen/-a še {round(dolg,2)}"
 
 def prikaz_placila(placilo):
-    return f"{placilo.znesek},{placilo.datum}, {placilo.opis}"
+    return f"{placilo.znesek},{placilo.opis}, {placilo.datum}"
 
 def izberi_skupino(model):
     return izberi_moznost([(skupina, prikaz_skupine(skupina)) for skupina in model.skupine])
@@ -58,7 +58,7 @@ def izberi_placilo(model):
 def tekstovni_vmesnik():
     pozdravno_sporocilo()
     while True:
-        #prikazi_aktualne_skupine()
+        prikazi_aktualne_skupine()
         ukaz = izberi_moznost(
             [
                 (DODAJ_SKUPINO, "dodaj novo skupino"),
@@ -95,15 +95,20 @@ def tekstovni_vmesnik():
 def pozdravno_sporocilo():
     print("Pozdravljeni!")
 
-#def prikazi_aktualne_skupine():
-#    if moj_model.aktualna_skupina:
-#        for skupina in moj_model.skupine
+def prikazi_aktualne_skupine():
+    if moj_model.aktualna_skupina:
+        for skupina in moj_model.skupine:
+            print(f"{skupina.ime}: {skupina.stevilo_udelezencev()} udeležencev, {Skupina.skupni_strosek(skupina)} plačano, {Skupina.strosek_enega(skupina)} na enega")
+        
 
 def dodaj_skupino():
     print("Vnesite podatke nove skupine.")
     ime = input("Ime> ")
-    nova_skupina = Skupina(ime)
-    moj_model.dodaj_skupino(nova_skupina)
+    if ime in moj_model.skupine:
+        print("Skupina s takšnim imenom že obstaja.")
+    else:
+        nova_skupina = Skupina(ime)
+        moj_model.dodaj_skupino(nova_skupina)
 
 def pobrisi_skupino():
     skupina = izberi_skupino(moj_model)
@@ -115,25 +120,40 @@ def zamenjaj_skupino():
     moj_model.zamenjaj_skupino(skupina)
 
 def dodaj_udelezenca():
+    skupina = moj_model.aktualna_skupina
     print("Vnesite podatke novega udeleženca.")
     ime = input("Ime> ")
     nov_udelezenec = Udelezenec(ime)
-    moj_model.dodaj_udelezenca(nov_udelezenec)
+    Skupina.dodaj_udelezenca(skupina, nov_udelezenec)
 
 def pobrisi_udelezenca():
-    oseba = izberi_udelezenca(moj_model)
-    Skupina.zbrisi_udelezenca(oseba)
+    skupina = moj_model.aktualna_skupina
+    if skupina.udelezenci == []:
+        print("Skupina je brez udeležencev.")
+    else:
+        oseba = izberi_udelezenca(skupina)
+        Skupina.zbrisi_udelezenca(skupina, oseba)
 
 def dodaj_placilo():
+    skupina = moj_model.aktualna_skupina
+    print("Izberite komu želite dodati plačilo.")
+    udelezenec = izberi_udelezenca(skupina)
     print("Vnesite podatke plačila.")
     znesek = input("Znesek> ")
     datum = input("Datum> ")
     opis = input("Opis> ")
-    novo_placilo = Placilo(znesek, datum, opis)
-    moj_model.dodaj_placilo(novo_placilo)
+    Udelezenec.dodaj_placilo(udelezenec, znesek, datum, opis)
 
 def pobrisi_placilo():
-    placilo = izberi_placilo(moj_model)
-    Udelezenec.zbrisi_placilo(placilo)
+    if moj_model.skupine == []:
+        print("Ni vpisanih skupin")        
+    else: 
+        skupina = moj_model.aktualna_skupina
+        if skupina.udelezenci == []:
+            print("V skupini ni udeležnecev")
+        else:
+            oseba = izberi_udelezenca(skupina)
+            placilo = izberi_placilo(oseba)
+            Udelezenec.zbrisi_placilo(oseba,placilo)
 
 tekstovni_vmesnik()

@@ -22,14 +22,15 @@ class Model:
         self.skupine.remove(skupina)
         self.moja_zgodovina.append(skupina)
 
-    def dodaj_udelezenca(self, ime):
-        self.aktualna_skupina.dodaj_udelezenca(ime)
+    #def dodaj_udelezenca(self, ime):
+    #    self.aktualna_skupina.dodaj_udelezenca(ime)
+    #    self.udelezenci.append(ime)
     
-    def pobrisi_udelezenca(self, ime):
-        self.aktualna_skupina.zbrisi_udelezenca(ime)
+    #def pobrisi_udelezenca(self, ime):
+    #    self.aktualna_skupina.zbrisi_udelezenca(ime)
 
-    def dodaj_placilo(self, placilo):
-        self.aktualna_skupina.dodaj_placilo(placilo)
+    #def dodaj_placilo(self, placilo):
+    #    self.aktualna_skupina.dodaj_placilo(placilo)
 
     def v_slovar(self):
         return {
@@ -78,10 +79,13 @@ class Skupina:
         return len(self.udelezenci)
 
     def skupni_strosek(self):
-        return sum([oseba.placano for oseba in self.udelezenci]) 
+        return sum([int(Udelezenec.placal(oseba)) for oseba in self.udelezenci]) 
 
     def strosek_enega(self):
-        return round(Skupina.skupni_strosek() / Skupina.stevilo_udelezencev(), 2) 
+        if self.stevilo_udelezencev() == 0:
+            return 0
+        else:
+            return round(self.skupni_strosek() / self.stevilo_udelezencev(), 2) 
 
     def v_slovar(self):
         return {
@@ -106,15 +110,19 @@ class Udelezenec:
         self.placano = 0
         self.placila = []
 
-    def dodaj_placilo(self, placilo):
-        self.placano += placilo
-        self.placila.append(placilo)
+    def dodaj_placilo(self, znesek, datum, opis):
+        novo_placilo = Placilo(znesek, datum, opis)
+        self.placila.append(novo_placilo)
 
     def zbrisi_placilo(self, placilo):
-        self.placano -= placilo
+        self.placila.remove(placilo)
+
+    def placal(self):
+        return sum([int(placilo.znesek) for placilo in self.placila])
 
     def še_dolzen(self):
-        return Skupina.strosek_enega() - self.placano
+        skupina = Model().aktualna_skupina
+        return int(Skupina.strosek_enega(skupina)) - int(self.placal())
 
     def v_slovar(self):
         return {
