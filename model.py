@@ -87,7 +87,7 @@ class Skupina:
         return len(self.udelezenci)
 
     def skupni_strosek(self):
-        return sum([float(Udelezenec.placal(oseba)) for oseba in self.udelezenci]) 
+        return round(sum([float(Udelezenec.placal(oseba)) for oseba in self.udelezenci]), 2)
 
     def strosek_enega(self):
         if self.stevilo_udelezencev() == 0:
@@ -134,7 +134,7 @@ class Udelezenec:
         self.placila.remove(placilo)
 
     def placal(self):
-        return sum([float(placilo.znesek) for placilo in self.placila])
+        return round(sum([float(placilo.znesek) for placilo in self.placila]),2)
 
     def še_dolzen(self):
         skupina = Model().aktualna_skupina
