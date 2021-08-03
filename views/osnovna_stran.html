@@ -1,0 +1,74 @@
+% rebase('base.html')
+
+  <h1>Razdelitev stroškov</h1>
+
+
+<form method="POST" action="/zamenjaj-aktualno-skupino/">
+  % for indeks, skupina in enumerate(skupine):
+    % if skupina == aktualna_skupina:
+    <button name = "indeks" value = "{{indeks}}">
+        {{skupina.ime}}
+    </button>
+    % else:
+    <button name = "indeks" value="{{indeks}}">
+        {{skupina.ime}}
+    </button>
+    % end
+  % end
+</form>
+
+
+% if aktualna_skupina:
+<table>
+    <form method="POST" action="/dodaj-skupino/">
+        <td></td>
+        <td>
+            <input type = "text" name = "ime" placeholder="ime">
+        </td>
+        <td>
+            <button type="submit">dodaj</button>
+        </td>
+    </form>
+</table>
+<p>Število udeležencev: {{ stevilo_udelezencev }}</p>
+<p>Skupni strošek: {{ skupno_placilo }}&euro;</p>
+<p>Strošek enega: {{strosek_enega }}&euro;</p>
+<table>
+    <thead>
+        <td>Oseba:</td>
+        <td>Plačal/-a:</td>
+        <td>Dolg:</td>
+    </thead>
+    <tbody>
+        % for udelezenec in aktualna_skupina.udelezenci:
+        <tr>
+            <td>{{ udelezenec.ime }}</td>
+            <td>{{ udelezenec.placal() }}</td>
+            % dolg = round(strosek_enega - float(udelezenec.placal()) , 2)
+            <td>{{ dolg }}</td>
+            <td>
+                <form method = "POST" action ="/dodaj-placilo/">
+                    <button name="placilo" value="udelezenec">Dodaj plačilo</button>
+                </form>
+            </td>
+        </tr>
+        % end
+        <tr>
+            <form method="POST" action="/dodaj-udelezenca/">
+                <td>
+                    Dodajte udeleženca:
+                </td>
+                <td>
+                    <input type="text" name = "ime" placeholder="ime">
+                </td>
+                <td>
+                    <button type="submit">dodaj</button>
+                </td>               
+            </form>
+        </tr>
+    </tbody>
+</table>
+
+% else:
+
+<p>Nimate še nobene skupine.<a href = "/dodaj-skupino/">Dodajte jo!</a> </p>

@@ -1,0 +1,9 @@
+% rebase('base.html')
+
+<form method="POST">
+    <input name="ime" type="text" placeholder="ime udeleženca" value="{{polja.get('ime','')}}">
+    %if "ime" in napake:
+    <p>{{ napake["ime"] }}</p>
+    % end
+    <button>Dodaj</button>
+</form>

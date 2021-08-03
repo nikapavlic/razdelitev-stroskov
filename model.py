@@ -69,7 +69,14 @@ class Model:
             slovar = json.load(dat)
             return Model.iz_slovarja(slovar)
 
-
+    def preveri_podatke_nove_skupine(self, ime):
+        napake = {}
+        if not ime:
+            napake["ime"] = "Ime mora biti neprazno."
+        for skupina in self.skupine:
+            if skupina.ime == ime:
+                napake["ime"] = "Ime je že zasedeno."
+        return napake
 
 
 class Skupina:
@@ -78,7 +85,10 @@ class Skupina:
         self.udelezenci = []
 
     def dodaj_udelezenca(self, udelezenec):
-        self.udelezenci.append(udelezenec)
+        if udelezenec in self.udelezenci:
+            raise ValueError("Udeleženec s takšnim imenom že obstaja")
+        else:
+            self.udelezenci.append(udelezenec)
 
     def zbrisi_udelezenca(self, udelezenec):
         self.udelezenci.remove(udelezenec)
@@ -117,6 +127,15 @@ class Skupina:
         ]
         return skupina
 
+    def preveri_podatke_novega_udelezenca(self, ime):
+        napake = {}
+        if not ime:
+            napake["ime"] = "Ime mora biti neprazno"
+        else:
+            for udelezenec in self.udelezenci:
+                if udelezenec.ime == ime:
+                    napake["ime"] = "Ime je že zasedeno"
+        return napake
 
 
 
