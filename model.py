@@ -153,9 +153,11 @@ class Udelezenec:
         self.placila.remove(placilo)
 
     def placal(self):
+        """Vrne koliko je udeleženec že plačal."""
         return round(sum([float(placilo.znesek) for placilo in self.placila]),2)
 
     def še_dolzen(self):
+        """Vrne koliko je udeleženec še dolžen."""
         skupina = Model().aktualna_skupina
         return float(Skupina.strosek_enega(skupina)) - float(self.placal())
 

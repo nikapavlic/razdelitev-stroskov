@@ -32,7 +32,7 @@
 </table>
 <p>Število udeležencev: {{ stevilo_udelezencev }}</p>
 <p>Skupni strošek: {{ skupno_placilo }}&euro;</p>
-<p>Strošek enega: {{strosek_enega }}&euro;</p>
+<p>Strošek enega: {{ strosek_enega }}&euro;</p>
 <table>
     <thead>
         <td>Oseba:</td>
@@ -40,15 +40,18 @@
         <td>Dolg:</td>
     </thead>
     <tbody>
-        % for udelezenec in aktualna_skupina.udelezenci:
+        % for indeks, udelezenec in enumerate(aktualna_skupina.udelezenci):
         <tr>
             <td>{{ udelezenec.ime }}</td>
-            <td>{{ udelezenec.placal() }}</td>
+            <td>{{ udelezenec.placal() }}&euro;</td>
             % dolg = round(strosek_enega - float(udelezenec.placal()) , 2)
-            <td>{{ dolg }}</td>
+            <td>{{ dolg }}&euro;</td>
             <td>
                 <form method = "POST" action ="/dodaj-placilo/">
-                    <button name="placilo" value="udelezenec">Dodaj plačilo</button>
+                    
+                    <input type="text" name="znesek" placeholder="znesek">
+                    <input type="text" name="opis" placeholder="opis">
+                    <button type="submit" name="indeks" value="{{indeks}}">Dodaj plačilo</button>
                 </form>
             </td>
         </tr>
