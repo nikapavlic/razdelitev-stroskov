@@ -1,21 +1,30 @@
 % rebase('base.html')
 
-  <h1>Razdelitev stroškov</h1>
+  <h1>
+      <span class="purple-text text-lighten-4">Razdelitev stroškov</span>
+  </h1>
 
-
+<!nav>
+    <!div class="nav-wrapper">
+        <!ul id="nav-mobile" class="left hide-on-med-and-down">
+            
 <form method="POST" action="/zamenjaj-aktualno-skupino/">
   % for indeks, skupina in enumerate(skupine):
     % if skupina == aktualna_skupina:
-    <button name = "indeks" value = "{{indeks}}">
+    <button name = "indeks" value = "{{indeks}}" class="btn waves-effect waves-dark">
         {{skupina.ime}}
     </button>
     % else:
-    <button name = "indeks" value="{{indeks}}">
+    <button name = "indeks" value="{{indeks}}" class="btn waves-effect waves-light">
         {{skupina.ime}}
     </button>
     % end
   % end
 </form>
+        <!/ul>
+    <!/div>
+<!/nav>
+
 
 
 % if aktualna_skupina:
@@ -33,7 +42,7 @@
 <p>Število udeležencev: {{ stevilo_udelezencev }}</p>
 <p>Skupni strošek: {{ skupno_placilo }}&euro;</p>
 <p>Strošek enega: {{ strosek_enega }}&euro;</p>
-<table>
+<table margin = 35px>
     <thead>
         <td>Oseba:</td>
         <td>Plačal/-a:</td>
@@ -48,10 +57,14 @@
             <td>{{ dolg }}&euro;</td>
             <td>
                 <form method = "POST" action ="/dodaj-placilo/">
-                    
                     <input type="text" name="znesek" placeholder="znesek">
                     <input type="text" name="opis" placeholder="opis">
                     <button type="submit" name="indeks" value="{{indeks}}">Dodaj plačilo</button>
+                </form>
+            </td>
+            <td>
+                <form method="POST" action="/pobrisi-udelezenca/">
+                    <button type="submit" name="indeks" value="{{indeks}}">-</button>              
                 </form>
             </td>
         </tr>
@@ -71,7 +84,11 @@
         </tr>
     </tbody>
 </table>
-
+<p>
+<form method="POST" action="/zakljuci-belezenje/">
+    <button type="submit">Zaključi beleženje</button>
+</form>
+</p>
 % else:
 
 <p>Nimate še nobene skupine.<a href = "/dodaj-skupino/">Dodajte jo!</a> </p>

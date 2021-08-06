@@ -15,6 +15,7 @@ DODAJ_PLACILO = 6
 POBRISI_PLACILO = 7
 IZHOD = 8
 
+
 def preberi_stevilo():
     while True:
         vnos = input("> ")
@@ -22,6 +23,7 @@ def preberi_stevilo():
             return int(vnos)
         except ValueError:
             print("Vnesti morate število.")
+
 
 def izberi_moznost(moznosti):
     for i, (_moznost, opis) in enumerate(moznosti, 1):
@@ -34,8 +36,10 @@ def izberi_moznost(moznosti):
         else:
             print(f"Vnesti morate število med 1 in {len(moznosti)}.")
 
+
 def prikaz_skupine(skupina):
     return f"{skupina.ime}"
+
 
 def prikaz_udelezenca(oseba):
     skupina = moj_model.aktualna_skupina
@@ -43,17 +47,22 @@ def prikaz_udelezenca(oseba):
     #dolg = Udelezenec.še_dolzen(oseba)
     return f"{oseba.ime}: plačal/-a {Udelezenec.placal(oseba)}, dolžen/-a še {round(dolg,2)}"
 
+
 def prikaz_placila(placilo):
     return f"{placilo.znesek},{placilo.opis}"
+
 
 def izberi_skupino(model):
     return izberi_moznost([(skupina, prikaz_skupine(skupina)) for skupina in model.skupine])
 
+
 def izberi_udelezenca(skupina):
     return izberi_moznost([(oseba, prikaz_udelezenca(oseba)) for oseba in skupina.udelezenci])
 
+
 def izberi_placilo(udelezenec):
     return izberi_moznost([(placilo, prikaz_placila(placilo)) for placilo in udelezenec.placila])
+
 
 def tekstovni_vmesnik():
     pozdravno_sporocilo()
@@ -91,15 +100,15 @@ def tekstovni_vmesnik():
             break
 
 
-
 def pozdravno_sporocilo():
     print("Pozdravljeni!")
+
 
 def prikazi_aktualne_skupine():
     if moj_model.aktualna_skupina:
         for skupina in moj_model.skupine:
             print(f"{skupina.ime}: {skupina.stevilo_udelezencev()} udeležencev, {Skupina.skupni_strosek(skupina)} plačano, {Skupina.strosek_enega(skupina)} na enega")
-        
+
 
 def dodaj_skupino():
     print("Vnesite podatke nove skupine.")
@@ -114,9 +123,11 @@ def dodaj_skupino():
             nova_skupina = Skupina(ime)
             moj_model.dodaj_skupino(nova_skupina)
 
+
 def pobrisi_skupino():
     skupina = izberi_skupino(moj_model)
     moj_model.pobrisi_skupino(skupina)
+
 
 def zamenjaj_skupino():
     if moj_model.skupine == []:
@@ -125,6 +136,7 @@ def zamenjaj_skupino():
         print("Izberite skupino, na katero bi preklopili.")
         skupina = izberi_skupino(moj_model)
         moj_model.zamenjaj_skupino(skupina)
+
 
 def dodaj_udelezenca():
     if moj_model.skupine == []:
@@ -139,6 +151,7 @@ def dodaj_udelezenca():
             nov_udelezenec = Udelezenec(ime)
             Skupina.dodaj_udelezenca(skupina, nov_udelezenec)
 
+
 def pobrisi_udelezenca():
     skupina = moj_model.aktualna_skupina
     if skupina.udelezenci == []:
@@ -147,11 +160,12 @@ def pobrisi_udelezenca():
         oseba = izberi_udelezenca(skupina)
         Skupina.zbrisi_udelezenca(skupina, oseba)
 
+
 def dodaj_znesek():
     znesek = input("Znesek> ")
-    #if not znesek.isdecimal():
+    # if not znesek.isdecimal():
     #    dodaj_znesek()
-    #else:
+    # else:
     #    return float(znesek)
     try:
         print(znesek)
@@ -159,6 +173,7 @@ def dodaj_znesek():
     except ValueError:
         print("Vnesti morate število.")
         dodaj_znesek()
+
 
 def dodaj_placilo():
     if moj_model.skupine == []:
@@ -173,24 +188,26 @@ def dodaj_placilo():
             print("Vnesite podatke plačila.")
             znesek = dodaj_znesek()
             #znesek = input("Znesek> ")
-            #try:
+            # try:
             #    return int(znesek)
-            #except ValueError:
+            # except ValueError:
             #    print("Vnesti morate število.")
             opis = input("Opis> ")
             Udelezenec.dodaj_placilo(udelezenec, znesek, opis)
 
+
 def pobrisi_placilo():
     if moj_model.skupine == []:
-        print("Ni vpisanih skupin")        
-    else: 
+        print("Ni vpisanih skupin")
+    else:
         skupina = moj_model.aktualna_skupina
         if skupina.udelezenci == []:
             print("V skupini ni udeležnecev")
         else:
             oseba = izberi_udelezenca(skupina)
             placilo = izberi_placilo(oseba)
-            Udelezenec.zbrisi_placilo(oseba,placilo)
+            Udelezenec.zbrisi_placilo(oseba, placilo)
+
 
 tekstovni_vmesnik()
-#dodaj_znesek()
+# dodaj_znesek()
