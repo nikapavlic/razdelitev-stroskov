@@ -1,5 +1,5 @@
-from datetime import date
 import json
+
 
 class Model:
     def __init__(self):
@@ -11,7 +11,7 @@ class Model:
         self.skupine.append(skupina)
         if not self.aktualna_skupina:
             self.aktualna_skupina = skupina
-    
+
     def pobrisi_skupino(self, skupina):
         self.skupine.remove(skupina)
 
@@ -30,14 +30,7 @@ class Model:
             povecan_seznam.append(ime.upper())
         return povecan_seznam
 
-    #def dodaj_udelezenca(self, ime):
-    #    self.aktualna_skupina.dodaj_udelezenca(ime)
-    #    self.udelezenci.append(ime)
-    
-    #def pobrisi_udelezenca(self, ime):
-    #    self.aktualna_skupina.zbrisi_udelezenca(ime)
-
-    #def dodaj_placilo(self, placilo):
+    # def dodaj_placilo(self, placilo):
     #    self.aktualna_skupina.dodaj_placilo(placilo)
 
     def v_slovar(self):
@@ -62,7 +55,7 @@ class Model:
         with open(ime_datoteke, "w", encoding='utf-8') as dat:
             slovar = self.v_slovar()
             json.dump(slovar, dat)
-        
+
     @staticmethod
     def preberi_iz_datoteke(ime_datoteke):
         with open(ime_datoteke, encoding='utf-8') as dat:
@@ -103,7 +96,7 @@ class Skupina:
         if self.stevilo_udelezencev() == 0:
             return 0
         else:
-            return round(self.skupni_strosek() / self.stevilo_udelezencev(), 2) 
+            return round(self.skupni_strosek() / self.stevilo_udelezencev(), 2)
 
     def imena_udelezencev(self):
         """Vrne seznam imen udeležencev v skupini napisanih z velikimi tiskanimi črkami."""
@@ -117,8 +110,8 @@ class Skupina:
         return {
             "ime_skupine": self.ime,
             "udeleženci": [oseba.v_slovar() for oseba in self.udelezenci]
-        }  
-    
+        }
+
     @staticmethod
     def iz_slovarja(slovar):
         skupina = Skupina(slovar["ime_skupine"])
@@ -138,7 +131,6 @@ class Skupina:
         return napake
 
 
-
 class Udelezenec:
     def __init__(self, ime):
         self.ime = ime
@@ -146,9 +138,9 @@ class Udelezenec:
         self.placila = []
 
     def dodaj_placilo(self, znesek, opis):
-        #if not isinstance(znesek, float):
+        # if not isinstance(znesek, float):
         #    ValueError("Znesek ni število")
-        #else:
+        # else:
         novo_placilo = Placilo(znesek, opis)
         self.placila.append(novo_placilo)
 
@@ -157,7 +149,7 @@ class Udelezenec:
 
     def placal(self):
         """Vrne koliko je udeleženec že plačal."""
-        return round(sum([float(placilo.znesek) for placilo in self.placila]),2)
+        return round(sum([float(placilo.znesek) for placilo in self.placila]), 2)
 
     def še_dolzen(self):
         """Vrne koliko je udeleženec še dolžen."""
@@ -173,7 +165,8 @@ class Udelezenec:
     @staticmethod
     def iz_slovarja(slovar):
         udelezenec = Udelezenec(slovar["ime"])
-        udelezenec.placila = [Placilo.iz_slovarja(sl_placila) for sl_placila in slovar["plačila"]]
+        udelezenec.placila = [Placilo.iz_slovarja(
+            sl_placila) for sl_placila in slovar["plačila"]]
         return udelezenec
 
 
@@ -181,7 +174,7 @@ class Placilo:
     def __init__(self, znesek, opis):
         self.znesek = znesek
         self.opis = opis
-    
+
     def v_slovar(self):
         return {
             "znesek": self.znesek,
