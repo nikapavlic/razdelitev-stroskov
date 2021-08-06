@@ -65,7 +65,8 @@
             <td>{{ placilo.opis }}</td>
             <td style="padding-top: 0; padding-bottom: 0;">
                 <form method="POST" action="/pobrisi-placilo/">
-                    <button class="btn btn-small" type="submit" name="st" value="{{st}}">
+                    <input type="hidden" name ="indeks" value="{{indeks}}">
+                    <button class="btn btn-smal" type="submit" name="st" value="{{st}}">
                         <i class="material-icons">remove</i> 
                     </button>
                 </form>
