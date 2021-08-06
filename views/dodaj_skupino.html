@@ -1,10 +1,13 @@
 % rebase('base.html')
 
+<h5>Dodajte novo skupino:</h5>
+
+<div class="card-panel teal lighten-5" style="width: 30%;">
 <form method="POST">
-    <input name = "ime" type="text" placeholder="ime skupine" value = "{{polja.get('ime', '')}}">
+    <input name = "ime" type="text" placeholder="Ime skupine" value = "{{polja.get('ime', '')}}">
     % if "ime" in napake:
     <p>{{ napake["ime"] }}</p>
     %end
-    <button>Dodaj</button>
+    <button class="btn">Dodaj</button>
 </form>
-
+</div>

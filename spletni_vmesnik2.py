@@ -16,7 +16,7 @@ def osnovna_stran():
     skupno_placilo = Skupina.skupni_strosek(skupina)
     strosek_enega = Skupina.strosek_enega(skupina)
     return bottle.template(
-        "osnovna_stran.html",
+        "osnovna_stran2.html",
         skupine = skupine,
         aktualna_skupina = skupina,
         stevilo_udelezencev = stevilo_udelezencev,
@@ -59,26 +59,23 @@ def dodaj_udelezenca_post():
         return bottle.template("dodaj_udelezenca.html", napake = napake, polja = polja)
     else:
         nov_udelezenec = Udelezenec(ime)
-        placal = nov_udelezenec.placal()
-        dolg = Skupina.strosek_enega(skupina) - float(Udelezenec.placal(nov_udelezenec ))
+        #placal = nov_udelezenec.placal()
+        #dolg = Skupina.strosek_enega(skupina) - float(Udelezenec.placal(nov_udelezenec ))
         Skupina.dodaj_udelezenca(skupina, nov_udelezenec)
         moj_model.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect("/")
 
 @bottle.post("/dodaj-placilo/")
 def dodaj_placilo():
-    znesek = float(bottle.request.forms.getunicode("znesek"))
-    if bottle.request.forms["datum"]:
-        datum = date.fromisoformat(bottle.request.forms["datum"])
-    else:
-        datum = None
+    znesek = bottle.request.forms.getunicode("znesek")
     opis = bottle.request.forms.getunicode("opis")
     skupina = moj_model.aktualna_skupina
     print(dict(bottle.request.forms))
     indeks = bottle.request.forms.getunicode("indeks")
     udelezenec = skupina.udelezenci[int(indeks)]
-    Udelezenec.dodaj_placilo(udelezenec, znesek, datum, opis)
+    Udelezenec.dodaj_placilo(udelezenec, znesek, opis)
     moj_model.shrani_v_datoteko(IME_DATOTEKE)
+    bottle.redirect("/")
 
 @bottle.post("/zamenjaj-aktualno-skupino/")
 def zamenjaj_aktualno_skupino():
@@ -88,6 +85,50 @@ def zamenjaj_aktualno_skupino():
     moj_model.aktualna_skupina = skupina
     moj_model.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect("/")
+
+@bottle.post("/pobrisi-skupino/")
+def pobrisi_skupino():
+    print(dict(bottle.request.forms))
+    indeks = bottle.request.forms.getunicode("indeks")
+    skupina = moj_model.skupine[int(indeks)]
+    moj_model.pobrisi_skupino(skupina)
+    moj_model.shrani_v_datoteko(IME_DATOTEKE)
+    bottle.redirect("/")
+
+@bottle.post("/pobrisi-udelezenca/")
+def pobrisi_udelezenca():
+    print(dict(bottle.request.forms))
+    indeks = bottle.request.forms.getunicode("indeks")
+    skupina = moj_model.aktualna_skupina
+    udelezenec = skupina.udelezenci[int(indeks)]
+    Skupina.zbrisi_udelezenca(skupina, udelezenec)
+    moj_model.shrani_v_datoteko(IME_DATOTEKE)
+    bottle.redirect("/")
+
+@bottle.post("/pobrisi-placilo/")
+def pobrisi_placilo():
+    print(dict(bottle.request.forms))
+    indeks = bottle.request.forms.getunicode("indeks")
+    skupina = moj_model.aktualna_skupina
+    udelezenec = skupina.udelezenci[int(indeks)]
+    print(dict(bottle.request.forms))
+    st = bottle.request.forms.getunicode("st")
+    placilo = udelezenec.placila[int(st)]
+    Udelezenec.zbrisi_placilo(udelezenec, placilo)
+    moj_model.shrani_v_datoteko(IME_DATOTEKE)
+    bottle.redirect("/")
+
+
+
+################
+@bottle.post("/zakljuci-belezenje/")
+def zakljuci_belezenje():
+    skupina = moj_model.aktualna_skupina
+    moj_model.zakljuci_belezenje(skupina)
+    moj_model.shrani_v_datoteko(IME_DATOTEKE)
+    bottle.redirect("/")
+###################
+
 
 @bottle.error(404)
 def error_404(error):

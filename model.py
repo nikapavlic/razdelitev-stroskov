@@ -145,8 +145,11 @@ class Udelezenec:
         self.placano = 0
         self.placila = []
 
-    def dodaj_placilo(self, znesek, datum, opis):
-        novo_placilo = Placilo(znesek, datum, opis)
+    def dodaj_placilo(self, znesek, opis):
+        #if not isinstance(znesek, float):
+        #    ValueError("Znesek ni število")
+        #else:
+        novo_placilo = Placilo(znesek, opis)
         self.placila.append(novo_placilo)
 
     def zbrisi_placilo(self, placilo):
@@ -175,15 +178,13 @@ class Udelezenec:
 
 
 class Placilo:
-    def __init__(self, znesek, datum, opis):
+    def __init__(self, znesek, opis):
         self.znesek = znesek
-        self.datum = datum
         self.opis = opis
     
     def v_slovar(self):
         return {
             "znesek": self.znesek,
-            "datum": date.isoformat(self.datum) if self.datum else None,
             "opis": self.opis,
         }
 
@@ -191,6 +192,5 @@ class Placilo:
     def iz_slovarja(slovar):
         return Placilo(
             slovar["znesek"],
-            date.isoformat(slovar["datum"]) if slovar["datum"] else None,
             slovar["opis"]
         )

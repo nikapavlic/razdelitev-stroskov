@@ -44,7 +44,7 @@ def prikaz_udelezenca(oseba):
     return f"{oseba.ime}: plačal/-a {Udelezenec.placal(oseba)}, dolžen/-a še {round(dolg,2)}"
 
 def prikaz_placila(placilo):
-    return f"{placilo.znesek},{placilo.opis}, {placilo.datum}"
+    return f"{placilo.znesek},{placilo.opis}"
 
 def izberi_skupino(model):
     return izberi_moznost([(skupina, prikaz_skupine(skupina)) for skupina in model.skupine])
@@ -177,9 +177,8 @@ def dodaj_placilo():
             #    return int(znesek)
             #except ValueError:
             #    print("Vnesti morate število.")
-            datum = input("Datum> ")
             opis = input("Opis> ")
-            Udelezenec.dodaj_placilo(udelezenec, znesek, datum, opis)
+            Udelezenec.dodaj_placilo(udelezenec, znesek, opis)
 
 def pobrisi_placilo():
     if moj_model.skupine == []:
