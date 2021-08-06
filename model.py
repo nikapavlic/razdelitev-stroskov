@@ -30,9 +30,6 @@ class Model:
             povecan_seznam.append(ime.upper())
         return povecan_seznam
 
-    # def dodaj_placilo(self, placilo):
-    #    self.aktualna_skupina.dodaj_placilo(placilo)
-
     def v_slovar(self):
         return {
             "skupine": [skupina.v_slovar() for skupina in self.skupine],
@@ -138,9 +135,9 @@ class Udelezenec:
         self.placila = []
 
     def dodaj_placilo(self, znesek, opis):
-        # if not isinstance(znesek, float):
+        #if not isinstance(znesek, float):
         #    ValueError("Znesek ni število")
-        # else:
+        #else:
         novo_placilo = Placilo(znesek, opis)
         self.placila.append(novo_placilo)
 

@@ -28,16 +28,16 @@
 % if aktualna_skupina:
 <ul class="collection" style="width: 400pt">
     <li class="collection-item">Število oseb: {{ stevilo_udelezencev }}</li>
-    <li class="collection-item">Skupni strošek: {{ skupno_placilo }}&euro;</li>
-    <li class="collection-item">Strošek enega: {{ strosek_enega }}&euro;</li>
+    <li class="collection-item">Skupni strošek: <b>{{ skupno_placilo }}&euro;</b></li>
+    <li class="collection-item">Strošek enega: <b>{{ strosek_enega }}&euro;</b></li>
 </ul>
 
 % for indeks, udelezenec in enumerate(aktualna_skupina.udelezenci):
 <div class="card-panel teal lighten-5" style="width: 400pt;">
     <table>
         <thead>
-            <tr>
-                <th class="teal-text">{{ udelezenec.ime.capitalize() }}</th>
+            <tr class="teal lighten-5">
+                <th class="teal-text" style="width: 75pt;"><h5>{{ udelezenec.ime.capitalize() }}</h5></th>
                 <th>Plačal/-a: <div>{{ udelezenec.placal() }}&euro;</div> </th>
                 %dolg = round(strosek_enega - float(udelezenec.placal()) , 2)
                 % if dolg < 0: 
@@ -61,7 +61,7 @@
         %for st, placilo in enumerate(udelezenec.placila):
         <tr>
             <td></td>
-            <td>{{placilo.znesek}}</td>
+            <td>{{placilo.znesek}}&euro;</td>
             <td>{{ placilo.opis }}</td>
             <td style="padding-top: 0; padding-bottom: 0;">
                 <form method="POST" action="/pobrisi-placilo/">
@@ -94,7 +94,7 @@
 </div>
 % end
 <form method="POST" action="/dodaj-udelezenca/">
-    <button class="btn teal" type="submit" style="width: 400pt;"><i class="material-icons">add</i></button>
+    <button class="btn teal" type="submit" style="width: 400pt;"><i class="material-icons">person_add</i></button>
 </form>
 
 

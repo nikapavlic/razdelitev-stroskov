@@ -124,11 +124,11 @@ def dodaj_placilo():
 
 @bottle.post("/pobrisi-placilo/")
 def pobrisi_placilo():
-    print(dict(bottle.request.forms))
+    #print(dict(bottle.request.forms))
     indeks = bottle.request.forms.getunicode("indeks")
     skupina = moj_model.aktualna_skupina
     udelezenec = skupina.udelezenci[int(indeks)]
-    print(dict(bottle.request.forms))
+    #print(dict(bottle.request.forms))
     st = bottle.request.forms.getunicode("st")
     placilo = udelezenec.placila[int(st)]
     Udelezenec.zbrisi_placilo(udelezenec, placilo)
