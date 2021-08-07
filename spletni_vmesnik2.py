@@ -53,9 +53,7 @@ def pobrisi_skupino_get():
 
 @bottle.post("/pobrisi-skupino/")
 def pobrisi_skupino():
-    print(dict(bottle.request.forms))
-    indeks = bottle.request.forms.getunicode("indeks")
-    skupina = moj_model.skupine[int(indeks)]
+    skupina = moj_model.aktualna_skupina
     moj_model.pobrisi_skupino(skupina)
     moj_model.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect("/")
@@ -69,6 +67,15 @@ def zamenjaj_aktualno_skupino():
     moj_model.aktualna_skupina = skupina
     moj_model.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect("/")
+
+
+@bottle.post("/zakljuci-belezenje/")
+def zakljuci_belezenje():
+    skupina = moj_model.aktualna_skupina
+    moj_model.zakljuci_belezenje(skupina)
+    moj_model.shrani_v_datoteko(IME_DATOTEKE)
+    bottle.redirect("/")
+
 
 # VEZANO NA UDELEŽENCA:
 
@@ -106,6 +113,7 @@ def pobrisi_udelezenca():
     moj_model.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect("/")
 
+
 # VEZANO NA PLAČILO
 
 
@@ -136,14 +144,10 @@ def pobrisi_placilo():
     bottle.redirect("/")
 
 
-################
-@bottle.post("/zakljuci-belezenje/")
-def zakljuci_belezenje():
-    skupina = moj_model.aktualna_skupina
-    moj_model.zakljuci_belezenje(skupina)
-    moj_model.shrani_v_datoteko(IME_DATOTEKE)
-    bottle.redirect("/")
-###################
+@bottle.get("/zgodovina/")
+def zgodovina():
+    skupine = moj_model.moja_zgodovina
+    return bottle.template("zgodovina.html", skupine = skupine,)
 
 
 @bottle.error(404)
