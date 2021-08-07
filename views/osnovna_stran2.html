@@ -18,10 +18,8 @@
             <i class="material-icons">add</i>
         </a>
     </form>
-    <form method="POST" action="/pobrisi-udelezenca/">
-        <a class="btn" href="/pobrisi-skupino/">
-            <i class="material-icons">remove</i>
-        </a>
+    <form class="right" method="GET" action="/zgodovina/">
+        <button class="btn">zgodovina</button>
     </form>
 </form>
 
@@ -96,8 +94,17 @@
 <form method="POST" action="/dodaj-udelezenca/">
     <button class="btn teal" type="submit" style="width: 400pt;"><i class="material-icons">person_add</i></button>
 </form>
+<form method="POST" action="/pobrisi-skupino/">
+    <button class="btn" type="submit">Zbriši skupino</button>
+</form>
+<form method="POST" action = "/zakljuci-belezenje/">
+    <button class="btn teal" type="submit">Zaključi</button>
+</form>
 
 
 
 % else:
 <p>Nimate še nobene skupine.<a href="/dodaj-skupino/">Dodajte jo!</a></p>
+
+% end
+% end

@@ -11,9 +11,16 @@ class Model:
         self.skupine.append(skupina)
         if not self.aktualna_skupina:
             self.aktualna_skupina = skupina
+        else:
+            self.aktualna_skupina = skupina
 
     def pobrisi_skupino(self, skupina):
         self.skupine.remove(skupina)
+        if self.skupine == []:
+            self.aktualna_skupina = None   
+        else:
+            self.aktualna_skupina = self.skupine[0]
+        
 
     def zamenjaj_skupino(self, skupina):
         self.aktualna_skupina = skupina
@@ -21,6 +28,10 @@ class Model:
     def zakljuci_belezenje(self, skupina):
         self.skupine.remove(skupina)
         self.moja_zgodovina.append(skupina)
+        if self.skupine == []:
+            self.aktualna_skupina = None
+        else:
+            self.aktualna_skupina = self.skupine[0]
 
     def imena_skupin(self):
         """Vrne seznam imen skupin napisanih z velikimi tiskanimi črkami."""
@@ -36,6 +47,7 @@ class Model:
             "aktualna_skupina": self.skupine.index(self.aktualna_skupina)
             if self.aktualna_skupina
             else None,
+            "zgodovina" :[skupina.v_slovar() for skupina in self.moja_zgodovina],
         }
 
     @staticmethod
@@ -46,6 +58,7 @@ class Model:
         ]
         if slovar["aktualna_skupina"] is not None:
             model.aktualna_skupina = model.skupine[slovar["aktualna_skupina"]]
+        model.moja_zgodovina = [Skupina.iz_slovarja(sl_skupine) for sl_skupine in slovar["zgodovina"]]
         return model
 
     def shrani_v_datoteko(self, ime_datoteke):

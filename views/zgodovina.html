@@ -1,0 +1,10 @@
+% rebase('base.html')
+
+<a href="/" class="btn">Nazaj</a>
+
+
+% for skupina in skupine:
+    <h6>{{skupina.ime}}</h6>
+    <p>Skupna poraba: {{skupina.skupni_strosek()}}</p>
+% end 
+
