@@ -1,41 +1,76 @@
 % rebase('base.html')
 
-<h1>Razdelitev stroškov</h1>
-<form method="POST" action="/zamenjaj-aktualno-skupino/">
-    % for indeks, skupina in enumerate(skupine):
-    % if skupina == aktualna_skupina:
-    <button class="btn" name="indeks" value="{{indeks}}">
-        {{skupina.ime}}
-    </button>
-    % else:
-    <button class="btn teal lighten-3" name="indeks" value="{{indeks}}">
-        {{skupina.ime}}
-    </button>
-    % end
-    % end
-    <form method="POST" action="/dodaj-skupino/">
-        <a class="btn" href="/dodaj-skupino/">
-            <i class="material-icons">add</i>
-        </a>
-    </form>
-    <form class="right" method="GET" action="/zgodovina/">
-        <button class="btn">zgodovina</button>
-    </form>
-</form>
+
+
+<nav class="nav-extended teal lighten-2">
+    <div class="nav-wrapper">
+        <span class="nav-title">Razdelitev stroškov</span>
+        <ul class="right">
+            <form method="GET" action="/zgodovina/">
+            <li class="tab"><a href="/zgodovina/">ZGODOVINA</a></li>
+            </form>
+        </ul>
+    </div>
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent">
+          <form method="POST" action="/zamenjaj-aktualno-skupino/">
+            % for indeks, skupina in enumerate(skupine):
+                % if skupina == aktualna_skupina:
+                <li class="tab teal lighten-1">
+                    <button class="btn-flat white-text" name = "indeks" value = "{{indeks}}">
+                        {{skupina.ime}}
+                    </button>
+                </li>
+                %else:
+                <li class="tab">
+                    <button class="btn-flat white-text" name = "indeks" value = "{{indeks}}">
+                        {{skupina.ime}}
+                    </button>
+                </li>
+                %end
+            %end
+          <form method="GET" action="/dodaj-skupino/">
+              <li class="tab"><a href="/dodaj-skupino/"><i class="material-icons">add</i></a></li>
+          </form> 
+        </form>
+        </ul>      
+    </div>
+  </nav>
+
 
 % if aktualna_skupina:
-<ul class="collection" style="width: 400pt">
-    <li class="collection-item">Število oseb: {{ stevilo_udelezencev }}</li>
-    <li class="collection-item">Skupni strošek: <b>{{ skupno_placilo }}&euro;</b></li>
-    <li class="collection-item">Strošek enega: <b>{{ strosek_enega }}&euro;</b></li>
-</ul>
+  <div class="row">
+    <div class="col s6" style="padding-left: 0px;">
+      
+        <ul class="collection" style="width: 400pt;">
+            <li class="collection-item">Število oseb: {{ stevilo_udelezencev }}</li>
+            <li class="collection-item">Skupni strošek: <b>{{ skupno_placilo }}&euro;</b></li>
+            <li class="collection-item">Strošek enega: <b>{{ strosek_enega }}&euro;</b></li>
+        </ul>  
+    </div>
+    <div class="col s6">
+    <ul>
+        <li>
+        <form method="POST" action="/pobrisi-skupino/">
+            <button class="btn right" type="submit" style="margin: 7px;">Zbriši skupino</button>
+        </form>
+        </li>
+        <li>
+        <form method="POST" action = "/zakljuci-belezenje/">
+            <button class="btn right" type="submit" style="margin: 7px;">Zaključi</button>
+        </form>
+        </li>
+    </ul>
+    </div>
+  </div>
+
 
 % for indeks, udelezenec in enumerate(aktualna_skupina.udelezenci):
 <div class="card-panel teal lighten-5" style="width: 400pt;">
     <table>
         <thead>
             <tr class="teal lighten-5">
-                <th class="teal-text" style="width: 75pt;"><h5>{{ udelezenec.ime.capitalize() }}</h5></th>
+                <th class="teal-text" style="width: 75pt;"><h5>{{ udelezenec.ime.title() }}</h5></th>
                 <th>Plačal/-a: <div>{{ udelezenec.placal() }}&euro;</div> </th>
                 %dolg = round(strosek_enega - float(udelezenec.placal()) , 2)
                 % if dolg < 0: 
@@ -82,7 +117,8 @@
                 </td>
                 <td>
                     <button class="btn" type="submit" name="indeks" value="{{indeks}}"><i
-                            class="material-icons">add</i></button>
+                            class="material-icons">add</i>
+                    </button>
                 </td>
 
             </form>
@@ -92,19 +128,21 @@
 </div>
 % end
 <form method="POST" action="/dodaj-udelezenca/">
-    <button class="btn teal" type="submit" style="width: 400pt;"><i class="material-icons">person_add</i></button>
+    <button class="btn" type="submit" style="width: 400pt;"><i class="material-icons">person_add</i></button>
 </form>
-<form method="POST" action="/pobrisi-skupino/">
-    <button class="btn" type="submit">Zbriši skupino</button>
-</form>
-<form method="POST" action = "/zakljuci-belezenje/">
-    <button class="btn teal" type="submit">Zaključi</button>
-</form>
-
+<div>
+    <i class="material-icons">priority_high</i>
+    Če skupino zbrišete, do podatkov ne bo mogoče več dostopati.
+    Če zaključite beleženje, lahko do skupne porabe in porabe ene osebe dostopate v <a href ="/zgodovina/">zgodovini</a>.
+</div>
+<div>
+    <i class="material-icons">priority_high</i>
+    Če je dolg obarvan z rdečo oz. pozitivno število, je oseba toliko dolžna. 
+    Če je dolg obarvan z zeleno oz. je negativno število, mora toliko dobiti nazaj.
+</div>
 
 
 % else:
-<p>Nimate še nobene skupine.<a href="/dodaj-skupino/">Dodajte jo!</a></p>
+<p> Nimate še nobene skupine. <a href="/dodaj-skupino/">Dodajte jo!</a></p>
 
-% end
 % end

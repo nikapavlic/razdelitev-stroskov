@@ -1,10 +1,24 @@
 % rebase('base.html')
+<div class="row">
+    <div class="col s6"><h4>Zgodovina</h4></div>
+    <div class="col s6"><a href="/" class="btn right">Nazaj</a></div>
+</div>
 
-<a href="/" class="btn">Nazaj</a>
+<table>
+    <tr>
+        <th>Skupina</th>
+        <th>Število oseb</th>
+        <th>Skupna poraba</th>
+        <th>Strošek enega</th>
+    </tr>
+    % for skupina in skupine:
+    <tr>
+        <td>{{ skupina.ime }}</td>
+        <td>{{ skupina.stevilo_udelezencev() }}</td>
+        <td>{{ skupina.skupni_strosek() }}&euro;</td>
+        <td>{{ skupina.strosek_enega() }}&euro;</td>
+    </tr>    
+    % end 
+</table>
 
-
-% for skupina in skupine:
-    <h6>{{skupina.ime}}</h6>
-    <p>Skupna poraba: {{skupina.skupni_strosek()}}</p>
-% end 
 

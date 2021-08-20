@@ -1,6 +1,15 @@
 import json
 
 
+def isfloat(x):
+    try:
+        a = float(x)
+    except (TypeError, ValueError):
+        return False
+    else:
+        return True
+
+
 class Model:
     def __init__(self):
         self.skupine = []
@@ -17,10 +26,9 @@ class Model:
     def pobrisi_skupino(self, skupina):
         self.skupine.remove(skupina)
         if self.skupine == []:
-            self.aktualna_skupina = None   
+            self.aktualna_skupina = None
         else:
             self.aktualna_skupina = self.skupine[0]
-        
 
     def zamenjaj_skupino(self, skupina):
         self.aktualna_skupina = skupina
@@ -47,7 +55,7 @@ class Model:
             "aktualna_skupina": self.skupine.index(self.aktualna_skupina)
             if self.aktualna_skupina
             else None,
-            "zgodovina" :[skupina.v_slovar() for skupina in self.moja_zgodovina],
+            "zgodovina": [skupina.v_slovar() for skupina in self.moja_zgodovina],
         }
 
     @staticmethod
@@ -58,7 +66,8 @@ class Model:
         ]
         if slovar["aktualna_skupina"] is not None:
             model.aktualna_skupina = model.skupine[slovar["aktualna_skupina"]]
-        model.moja_zgodovina = [Skupina.iz_slovarja(sl_skupine) for sl_skupine in slovar["zgodovina"]]
+        model.moja_zgodovina = [Skupina.iz_slovarja(
+            sl_skupine) for sl_skupine in slovar["zgodovina"]]
         return model
 
     def shrani_v_datoteko(self, ime_datoteke):
@@ -148,11 +157,11 @@ class Udelezenec:
         self.placila = []
 
     def dodaj_placilo(self, znesek, opis):
-        #if not isinstance(znesek, float):
-        #    ValueError("Znesek ni število")
-        #else:
-        novo_placilo = Placilo(znesek, opis)
-        self.placila.append(novo_placilo)
+        if not isfloat(znesek):
+            ValueError("Znesek mora biti število")
+        else:
+            novo_placilo = Placilo(znesek, opis)
+            self.placila.append(novo_placilo)
 
     def zbrisi_placilo(self, placilo):
         self.placila.remove(placilo)

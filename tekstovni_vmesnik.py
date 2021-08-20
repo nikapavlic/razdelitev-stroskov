@@ -161,20 +161,6 @@ def pobrisi_udelezenca():
         Skupina.zbrisi_udelezenca(skupina, oseba)
 
 
-def dodaj_znesek():
-    znesek = input("Znesek> ")
-    # if not znesek.isdecimal():
-    #    dodaj_znesek()
-    # else:
-    #    return float(znesek)
-    try:
-        print(znesek)
-        return float(znesek)
-    except ValueError:
-        print("Vnesti morate število.")
-        dodaj_znesek()
-
-
 def dodaj_placilo():
     if moj_model.skupine == []:
         print("Ni vpisanih skupin.")
@@ -186,12 +172,7 @@ def dodaj_placilo():
             print("Izberite komu želite dodati plačilo.")
             udelezenec = izberi_udelezenca(skupina)
             print("Vnesite podatke plačila.")
-            znesek = dodaj_znesek()
-            #znesek = input("Znesek> ")
-            # try:
-            #    return int(znesek)
-            # except ValueError:
-            #    print("Vnesti morate število.")
+            znesek = input("Znesek> ")
             opis = input("Opis> ")
             Udelezenec.dodaj_placilo(udelezenec, znesek, opis)
 
@@ -210,4 +191,3 @@ def pobrisi_placilo():
 
 
 tekstovni_vmesnik()
-# dodaj_znesek()

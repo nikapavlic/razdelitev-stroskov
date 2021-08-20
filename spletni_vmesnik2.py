@@ -12,9 +12,14 @@ except FileNotFoundError:
 def osnovna_stran():
     skupine = moj_model.skupine
     skupina = moj_model.aktualna_skupina
-    stevilo_udelezencev = Skupina.stevilo_udelezencev(skupina)
-    skupno_placilo = Skupina.skupni_strosek(skupina)
-    strosek_enega = Skupina.strosek_enega(skupina)
+    if skupina:
+        stevilo_udelezencev = Skupina.stevilo_udelezencev(skupina)
+        skupno_placilo = Skupina.skupni_strosek(skupina)
+        strosek_enega = Skupina.strosek_enega(skupina)
+    else:
+        stevilo_udelezencev = 0
+        skupno_placilo = 0
+        strosek_enega = 0
     return bottle.template(
         "osnovna_stran2.html",
         skupine=skupine,
@@ -23,6 +28,7 @@ def osnovna_stran():
         skupno_placilo=skupno_placilo,
         strosek_enega=strosek_enega,
     )
+
 # VEZANO NA SKUPINO:
 
 
@@ -132,11 +138,11 @@ def dodaj_placilo():
 
 @bottle.post("/pobrisi-placilo/")
 def pobrisi_placilo():
-    #print(dict(bottle.request.forms))
+    # print(dict(bottle.request.forms))
     indeks = bottle.request.forms.getunicode("indeks")
     skupina = moj_model.aktualna_skupina
     udelezenec = skupina.udelezenci[int(indeks)]
-    #print(dict(bottle.request.forms))
+    # print(dict(bottle.request.forms))
     st = bottle.request.forms.getunicode("st")
     placilo = udelezenec.placila[int(st)]
     Udelezenec.zbrisi_placilo(udelezenec, placilo)
@@ -147,7 +153,7 @@ def pobrisi_placilo():
 @bottle.get("/zgodovina/")
 def zgodovina():
     skupine = moj_model.moja_zgodovina
-    return bottle.template("zgodovina.html", skupine = skupine,)
+    return bottle.template("zgodovina.html", skupine=skupine,)
 
 
 @bottle.error(404)
