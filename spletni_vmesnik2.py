@@ -29,8 +29,6 @@ def osnovna_stran():
         strosek_enega=strosek_enega,
     )
 
-# VEZANO NA SKUPINO:
-
 
 @bottle.get("/dodaj-skupino/")
 def dodaj_skupino_get():
@@ -49,12 +47,6 @@ def dodaj_skupino_post():
         moj_model.dodaj_skupino(nova_skupina)
         moj_model.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect("/")
-
-
-@bottle.get("/pobrisi-skupino/")
-def pobrisi_skupino_get():
-    skupine = moj_model.skupine
-    return bottle.template("pobrisi_skupino.html", skupine=skupine)
 
 
 @bottle.post("/pobrisi-skupino/")
@@ -83,12 +75,8 @@ def zakljuci_belezenje():
     bottle.redirect("/")
 
 
-# VEZANO NA UDELEŽENCA:
-
-
 @bottle.get("/dodaj_udelezenca/")
 def dodaj_udelezenca_get():
-    #skupina = bottle.request.forms.getunicode("skupina")
     return bottle.template("dodaj_udelezenca.html", napake={}, polja={})
 
 
@@ -102,8 +90,6 @@ def dodaj_udelezenca_post():
         return bottle.template("dodaj_udelezenca.html", napake=napake, polja=polja)
     else:
         nov_udelezenec = Udelezenec(ime)
-        #placal = nov_udelezenec.placal()
-        #dolg = Skupina.strosek_enega(skupina) - float(Udelezenec.placal(nov_udelezenec ))
         Skupina.dodaj_udelezenca(skupina, nov_udelezenec)
         moj_model.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect("/")
@@ -118,9 +104,6 @@ def pobrisi_udelezenca():
     Skupina.zbrisi_udelezenca(skupina, udelezenec)
     moj_model.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect("/")
-
-
-# VEZANO NA PLAČILO
 
 
 @bottle.post("/dodaj-placilo/")

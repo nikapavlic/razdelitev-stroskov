@@ -44,7 +44,6 @@ def prikaz_skupine(skupina):
 def prikaz_udelezenca(oseba):
     skupina = moj_model.aktualna_skupina
     dolg = Skupina.strosek_enega(skupina) - float(Udelezenec.placal(oseba))
-    #dolg = Udelezenec.še_dolzen(oseba)
     return f"{oseba.ime}: plačal/-a {Udelezenec.placal(oseba)}, dolžen/-a še {round(dolg,2)}"
 
 

@@ -64,7 +64,6 @@
     </div>
   </div>
 
-
 % for indeks, udelezenec in enumerate(aktualna_skupina.udelezenci):
 <div class="card-panel teal lighten-5" style="width: 400pt;">
     <table>
@@ -85,7 +84,7 @@
                 <th>
                     <form method="POST" action="/pobrisi-udelezenca/">
                         <button class="btn" type="submit" name="indeks" value={{indeks}}>
-                            <i class="material-icons">remove</i>
+                            <i class="material-icons">remove person</i>
                         </button>
                     </form>
                 </th>
@@ -130,6 +129,7 @@
 <form method="POST" action="/dodaj-udelezenca/">
     <button class="btn" type="submit" style="width: 400pt;"><i class="material-icons">person_add</i></button>
 </form>
+<div style="height: 20pt;"></div>
 <div>
     <i class="material-icons">priority_high</i>
     Če skupino zbrišete, do podatkov ne bo mogoče več dostopati.
