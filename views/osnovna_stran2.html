@@ -10,43 +10,43 @@
                 <li class="tab"><a href="/navodila/">NAVODILA</a></li>
             </form>
             <form method="GET" action="/zgodovina/">
-            <li class="tab"><a href="/zgodovina/">ZGODOVINA</a></li>
+                <li class="tab"><a href="/zgodovina/">ZGODOVINA</a></li>
             </form>
         </ul>
     </div>
     <div class="nav-content">
-      <ul class="tabs tabs-transparent">
-          <form method="POST" action="/zamenjaj-aktualno-skupino/">
-            % for indeks, skupina in enumerate(skupine):
+        <ul class="tabs tabs-transparent">
+            <form method="POST" action="/zamenjaj-aktualno-skupino/">
+                % for indeks, skupina in enumerate(skupine):
                 % if skupina == aktualna_skupina:
                 <li class="tab teal lighten-1">
-                    <button class="btn-flat white-text" name = "indeks" value = "{{indeks}}">
+                    <button class="btn-flat white-text" name="indeks" value="{{indeks}}">
                         {{skupina.ime}}
                     </button>
                 </li>
                 %else:
                 <li class="tab">
-                    <button class="btn-flat white-text" name = "indeks" value = "{{indeks}}">
+                    <button class="btn-flat white-text" name="indeks" value="{{indeks}}">
                         {{skupina.ime}}
                     </button>
                 </li>
                 %end
-            %end
-          <form method="GET" action="/dodaj-skupino/">
-              <li class="tab"><a href="/dodaj-skupino/"><i class="material-icons">add</i></a></li>
-          </form> 
-        </form>
-        </ul>      
+                %end
+                <form method="GET" action="/dodaj-skupino/">
+                    <li class="tab"><a href="/dodaj-skupino/"><i class="material-icons">add</i></a></li>
+                </form>
+            </form>
+        </ul>
     </div>
-  </nav>
+</nav>
 
 
 % if aktualna_skupina:
-  <div class="row">
+<div class="row">
     <div class="col s6">
-    % if stevilo_udelezencev == 0:
-    <div style="margin-top: 20px;">V skupini ni dodane še nobene osebe. Dodajte jo s klikom na spodnji gumb.</div>
-    % else:
+        % if stevilo_udelezencev == 0:
+        <div style="margin-top: 20px;">V skupini ni dodane še nobene osebe. Dodajte jo s klikom na spodnji gumb.</div>
+        % else:
         <div class="card-panel teal lighten-4" style="width: 400pt; margin-left: 0%;">
             <table>
                 <tr>
@@ -54,91 +54,95 @@
                     <td>Skupni strošek: <b>{{ skupno_placilo }}&euro;</b></td>
                     <td>Strošek enega: <b>{{ strosek_enega }}&euro;</b></td>
                 </tr>
-            </table>     
+            </table>
         </div>
-    % end
-    % for indeks, udelezenec in enumerate(aktualna_skupina.udelezenci):
-    <div class="card-panel teal lighten-5" style="width: 400pt;">
-    <table>
-        <thead>
-            <tr class="teal lighten-5">
-                <th class="teal-text" style="width: 75pt;"><h5>{{ udelezenec.ime.title() }}</h5></th>
-                <th>Plačal/-a: <div>{{ udelezenec.placal() }}&euro;</div> </th>
-                %dolg = round(strosek_enega - float(udelezenec.placal()) , 2)
-                % if dolg < 0: 
-                    <th>
-                        Dolg: <div class="green-text">{{ dolg }}&euro;</div>
-                    </th>
-                % else:
-                    <th>
-                        Dolg: <div class="red-text">{{ dolg }}&euro;</div>
-                    </th>
-                %end
-                <th>
-                    <form method="POST" action="/pobrisi-udelezenca/">
-                        <button class="btn" type="submit" name="indeks" value={{indeks}}>
-                            <i class="material-icons">remove</i>
-                        </button>
-                    </form>
-                </th>
-            </tr>
-        </thead>
-        %for st, placilo in enumerate(udelezenec.placila):
-        <tr>
-            <td></td>
-            <td>{{placilo.znesek}}&euro;</td>
-            <td>{{ placilo.opis }}</td>
-            <td style="padding-top: 0; padding-bottom: 0;">
-                <form method="POST" action="/pobrisi-placilo/">
-                    <input type="hidden" name ="indeks" value="{{indeks}}">
-                    <button class="btn btn-small" type="submit" name="st" value="{{st}}">
-                        <i class="material-icons">remove</i> 
-                    </button>
-                </form>
-            </td>
-        </tr>
         % end
-        <tr>
-            <form method="POST" action="/dodaj-placilo/">
-                <td></td>
-                <td>
-                    <input type="text" name="znesek" placeholder="znesek">
-                </td>
-                <td>
-                    <input type="text" name="opis" placeholder="opis">
-                </td>
-                <td>
-                    <button class="btn" type="submit" name="indeks" value="{{indeks}}"><i
-                            class="material-icons">add</i>
-                    </button>
-                </td>
+        % for indeks, udelezenec in enumerate(aktualna_skupina.udelezenci):
+        <div class="card-panel teal lighten-5" style="width: 400pt;">
+            <table>
+                <thead>
+                    <tr class="teal lighten-5">
+                        <th class="teal-text" style="width: 75pt;">
+                            <h5>{{ udelezenec.ime }}</h5>
+                        </th>
+                        <th>Plačal/-a: <div>{{ udelezenec.placal() }}&euro;</div>
+                        </th>
+                        %dolg = round(strosek_enega - float(udelezenec.placal()) , 2)
+                        % if dolg < 0: 
+                            <th>
+                            Dolg: <div class="green-text">{{ dolg }}&euro;</div>
+                            </th>
+                            % else:
+                            <th>
+                                Dolg: <div class="red-text">{{ dolg }}&euro;</div>
+                            </th>
+                            %end
+                            <th>
+                                <form method="POST" action="/pobrisi-udelezenca/">
+                                    <button class="btn" type="submit" name="indeks" value={{indeks}}>
+                                        <i class="material-icons">remove</i>
+                                    </button>
+                                </form>
+                            </th>
+                    </tr>
+                </thead>
+                %for st, placilo in enumerate(udelezenec.placila):
+                <tr>
+                    <td></td>
+                    <td>{{placilo.znesek}}&euro;</td>
+                    <td>{{ placilo.opis }}</td>
+                    <td style="padding-top: 0; padding-bottom: 0;">
+                        <form method="POST" action="/pobrisi-placilo/">
+                            <input type="hidden" name="indeks" value="{{indeks}}">
+                            <button class="btn btn-small" type="submit" name="st" value="{{st}}">
+                                <i class="material-icons">remove</i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                % end
+                <tr>
+                    <form method="POST" action="/dodaj-placilo/">
+                        <td></td>
+                        <td>
+                            <input type="text" name="znesek" placeholder="znesek">
+                        </td>
+                        <td>
+                            <input type="text" name="opis" placeholder="opis">
+                        </td>
+                        <td>
+                            <button class="btn" type="submit" name="indeks" value="{{indeks}}"><i
+                                    class="material-icons">add</i>
+                            </button>
+                        </td>
 
-            </form>
-        </tr>
-        <tr></tr>
-    </table>
-</div>
+                    </form>
+                </tr>
+                <tr></tr>
+            </table>
+        </div>
 
-% end
-<form method="POST" action="/dodaj-udelezenca/">
-    <button class="btn" type="submit" style="width: 400pt; margin-top: 5px;"><i class="material-icons">person_add</i></button>
-</form>
-</div>
-
-<div class="col s6" style="padding-left: 0px;">
-    <ul>
-        <li>
-        <form method="POST" action="/pobrisi-skupino/">
-            <button class="btn right" type="submit" style="margin: 7px;">Zbriši skupino</button>
+        % end
+        <form method="POST" action="/dodaj-udelezenca/">
+            <button class="btn" type="submit" style="width: 400pt; margin-top: 5px;"><i
+                    class="material-icons">person_add</i></button>
         </form>
-        </li>
-        <li>
-        <form method="POST" action = "/zakljuci-belezenje/">
-            <button class="btn right" type="submit" style="margin: 7px;">Zaključi beleženje</button>
-        </form>
-        </li>
-    </ul>
-</div>
+    </div>
+
+    <div class="col s6" style="padding-left: 0px;">
+        <ul>
+            <li>
+                <form method="POST" action="/pobrisi-skupino/">
+                    <button class="btn right" type="submit" style="margin: 7px;">Zbriši skupino</button>
+                </form>
+            </li>
+            <li>
+                <form method="POST" action="/zakljuci-belezenje/">
+                    <button class="btn right" type="submit" style="margin: 7px;">Zaključi beleženje</button>
+                </form>
+            </li>
+        </ul>
+    </div>
 </div>
 
 
