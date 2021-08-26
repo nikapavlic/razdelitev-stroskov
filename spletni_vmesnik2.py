@@ -1,5 +1,5 @@
 import bottle
-from model import Model, Skupina, Udelezenec, Placilo
+from model import Model, Skupina, Udelezenec
 
 IME_DATOTEKE = "stanje.json"
 try:
@@ -121,11 +121,11 @@ def dodaj_placilo():
 
 @bottle.post("/pobrisi-placilo/")
 def pobrisi_placilo():
-    # print(dict(bottle.request.forms))
+    print(dict(bottle.request.forms))
     indeks = bottle.request.forms.getunicode("indeks")
     skupina = moj_model.aktualna_skupina
     udelezenec = skupina.udelezenci[int(indeks)]
-    # print(dict(bottle.request.forms))
+    print(dict(bottle.request.forms))
     st = bottle.request.forms.getunicode("st")
     placilo = udelezenec.placila[int(st)]
     Udelezenec.zbrisi_placilo(udelezenec, placilo)
@@ -137,6 +137,16 @@ def pobrisi_placilo():
 def zgodovina():
     skupine = moj_model.moja_zgodovina
     return bottle.template("zgodovina.html", skupine=skupine,)
+
+
+@bottle.get("/navodila/")
+def navodila():
+    return bottle.template("navodila.html")
+
+
+@bottle.get('/img/<picture>')
+def serve_picture(picture):
+    return bottle.static_file(picture, root='img')
 
 
 @bottle.error(404)

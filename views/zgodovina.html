@@ -1,6 +1,8 @@
 % rebase('base.html')
 <div class="row">
-    <div class="col s6"><h4>Zgodovina</h4></div>
+    <div class="col s6">
+        <h4>Zgodovina</h4>
+    </div>
     <div class="col s6"><a href="/" class="btn right">Nazaj</a></div>
 </div>
 
@@ -17,8 +19,6 @@
         <td>{{ skupina.stevilo_udelezencev() }}</td>
         <td>{{ skupina.skupni_strosek() }}&euro;</td>
         <td>{{ skupina.strosek_enega() }}&euro;</td>
-    </tr>    
-    % end 
+    </tr>
+    % end
 </table>
-
-

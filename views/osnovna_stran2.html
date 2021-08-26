@@ -5,7 +5,10 @@
 <nav class="nav-extended teal lighten-2">
     <div class="nav-wrapper">
         <span class="nav-title">Razdelitev stroškov</span>
-        <ul class="right">
+        <ul class="right hide-on-med-and-down">
+            <form method="GET" action="/navodila/">
+                <li class="tab"><a href="/navodila/">NAVODILA</a></li>
+            </form>
             <form method="GET" action="/zgodovina/">
             <li class="tab"><a href="/zgodovina/">ZGODOVINA</a></li>
             </form>
@@ -40,32 +43,22 @@
 
 % if aktualna_skupina:
   <div class="row">
-    <div class="col s6" style="padding-left: 0px;">
-      
-        <ul class="collection" style="width: 400pt;">
-            <li class="collection-item">Število oseb: {{ stevilo_udelezencev }}</li>
-            <li class="collection-item">Skupni strošek: <b>{{ skupno_placilo }}&euro;</b></li>
-            <li class="collection-item">Strošek enega: <b>{{ strosek_enega }}&euro;</b></li>
-        </ul>  
-    </div>
     <div class="col s6">
-    <ul>
-        <li>
-        <form method="POST" action="/pobrisi-skupino/">
-            <button class="btn right" type="submit" style="margin: 7px;">Zbriši skupino</button>
-        </form>
-        </li>
-        <li>
-        <form method="POST" action = "/zakljuci-belezenje/">
-            <button class="btn right" type="submit" style="margin: 7px;">Zaključi</button>
-        </form>
-        </li>
-    </ul>
-    </div>
-  </div>
-
-% for indeks, udelezenec in enumerate(aktualna_skupina.udelezenci):
-<div class="card-panel teal lighten-5" style="width: 400pt;">
+    % if stevilo_udelezencev == 0:
+    <div style="margin-top: 20px;">V skupini ni dodane še nobene osebe. Dodajte jo s klikom na spodnji gumb.</div>
+    % else:
+        <div class="card-panel teal lighten-4" style="width: 400pt; margin-left: 0%;">
+            <table>
+                <tr>
+                    <td>Število oseb: {{ stevilo_udelezencev}}</td>
+                    <td>Skupni strošek: <b>{{ skupno_placilo }}&euro;</b></td>
+                    <td>Strošek enega: <b>{{ strosek_enega }}&euro;</b></td>
+                </tr>
+            </table>     
+        </div>
+    % end
+    % for indeks, udelezenec in enumerate(aktualna_skupina.udelezenci):
+    <div class="card-panel teal lighten-5" style="width: 400pt;">
     <table>
         <thead>
             <tr class="teal lighten-5">
@@ -84,7 +77,7 @@
                 <th>
                     <form method="POST" action="/pobrisi-udelezenca/">
                         <button class="btn" type="submit" name="indeks" value={{indeks}}>
-                            <i class="material-icons">remove person</i>
+                            <i class="material-icons">remove</i>
                         </button>
                     </form>
                 </th>
@@ -98,7 +91,7 @@
             <td style="padding-top: 0; padding-bottom: 0;">
                 <form method="POST" action="/pobrisi-placilo/">
                     <input type="hidden" name ="indeks" value="{{indeks}}">
-                    <button class="btn btn-smal" type="submit" name="st" value="{{st}}">
+                    <button class="btn btn-small" type="submit" name="st" value="{{st}}">
                         <i class="material-icons">remove</i> 
                     </button>
                 </form>
@@ -125,20 +118,27 @@
         <tr></tr>
     </table>
 </div>
+
 % end
 <form method="POST" action="/dodaj-udelezenca/">
-    <button class="btn" type="submit" style="width: 400pt;"><i class="material-icons">person_add</i></button>
+    <button class="btn" type="submit" style="width: 400pt; margin-top: 5px;"><i class="material-icons">person_add</i></button>
 </form>
-<div style="height: 20pt;"></div>
-<div>
-    <i class="material-icons">priority_high</i>
-    Če skupino zbrišete, do podatkov ne bo mogoče več dostopati.
-    Če zaključite beleženje, lahko do skupne porabe in porabe ene osebe dostopate v <a href ="/zgodovina/">zgodovini</a>.
 </div>
-<div>
-    <i class="material-icons">priority_high</i>
-    Če je dolg obarvan z rdečo oz. pozitivno število, je oseba toliko dolžna. 
-    Če je dolg obarvan z zeleno oz. je negativno število, mora toliko dobiti nazaj.
+
+<div class="col s6" style="padding-left: 0px;">
+    <ul>
+        <li>
+        <form method="POST" action="/pobrisi-skupino/">
+            <button class="btn right" type="submit" style="margin: 7px;">Zbriši skupino</button>
+        </form>
+        </li>
+        <li>
+        <form method="POST" action = "/zakljuci-belezenje/">
+            <button class="btn right" type="submit" style="margin: 7px;">Zaključi beleženje</button>
+        </form>
+        </li>
+    </ul>
+</div>
 </div>
 
 
